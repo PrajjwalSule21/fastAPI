@@ -8,7 +8,7 @@ BOOKS = [
     {'title': "title three", 'author': 'author three', 'category':'history'},
     {'title': "title four", 'author': 'author four', 'category':'math'},
     {'title': "title five", 'author': 'author five', 'category':'math'},
-    {'title': "title six", 'author': 'author six', 'category':'math'}
+    {'title': "title six", 'author': 'author two', 'category':'math'}
 ]
 
 # @app.get("/")
@@ -73,3 +73,30 @@ async def real_all_books(book_title: str):
         if book.get('title').casefold() == book_title.casefold(): #casefold() will lowercase the string
             return book
     return None
+
+
+"""
+Query Parameters
+
+- Query parameter are request parameters that have been attached after a '?'
+- Query parameter have name=value pairs ex: 127.0.0.1:8000/books/?category=math
+"""
+
+@app.get("/books/") #fastapi will automatically define after / there will be query param
+async def read_category_by_query(category: str):
+    book_to_return = []
+    for book in BOOKS:
+        if book.get('category').casefold() == category.casefold():
+            book_to_return.append(book)
+    return book_to_return
+
+
+# we can use query param with path param as well
+@app.get("/books/{book_author}/")
+async def read_author_category_by_query(book_author: str, category: str):
+    book_to_return = []
+    for book in BOOKS:
+        if book.get('author').casefold() == book_author.casefold() and \
+            book.get('category').casefold() == category.casefold():
+            book_to_return.append(book)
+    return  book_to_return
