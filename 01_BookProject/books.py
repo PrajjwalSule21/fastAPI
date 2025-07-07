@@ -32,3 +32,44 @@ async def read_all_books():
 # -> ReDoc UI - /redoc (this path open ReDoc UI)
 
 
+"""
+Path Parameter: 
+1. This are request parameter that have been attached to the URL
+2. Path parameter are usually defined as a way to find information based on location.
+
+# Static path parameter -> /books
+# dynamic path parameter -> /books/{dynamic_path}
+
+As there no space in apicall (URL) and if we needed one so we have to define with %20
+"""
+
+
+# @app.get("/books/{dynamic_param}")
+# async def real_all_books(dynamic_param: str):
+#     return {'dynamic_param': dynamic_param}
+
+
+# @app.get("/books/mybook")
+# async def real_all_books():
+#     """
+#     This api will return
+#     {
+#       "dynamic_param": "mybook"
+#     }
+#
+#     instead of
+#     {
+#       "Book_title": "My favorite book!"
+#     }
+#
+#     Because FastAPI works in chronological manner so order matter for defining the apis
+#
+#     """
+#     return {'Book_title': "My favorite book!"}
+
+@app.get("/books/{book_title}")
+async def real_all_books(book_title: str):
+    for book in BOOKS:
+        if book.get('title').casefold() == book_title.casefold(): #casefold() will lowercase the string
+            return book
+    return None
