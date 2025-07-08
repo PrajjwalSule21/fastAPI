@@ -123,8 +123,22 @@ PUT request method
 """
 
 @app.put("/books/update_data")
-async def udate_book(update_book=Body()):
+async def update_book(update_book=Body()):
     for i in range(len(BOOKS)):
         if BOOKS[i].get("title").casefold() == update_book.get("title").casefold():
             BOOKS[i] = update_book
+    return None
+
+
+"""
+DELETE request
+- used to delete data
+"""
+
+@app.delete("/books/delete_book/{book_title}")
+async def delete_book(book_title: str):
+    for i in range(len(BOOKS)):
+        if BOOKS[i].get('title').casefold() == book_title.casefold():
+            BOOKS.pop(i)
+            break
     return None
