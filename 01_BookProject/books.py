@@ -112,3 +112,19 @@ POST request method
 @app.post("/books/create_book")
 async def create_book(new_book=Body()):
     BOOKS.append(new_book)
+
+
+
+"""
+PUT request method
+
+- used to update data.
+- PUT can have a body that has additional information (like POST) that GET does not have
+"""
+
+@app.put("/books/update_data")
+async def udate_book(update_book=Body()):
+    for i in range(len(BOOKS)):
+        if BOOKS[i].get("title").casefold() == update_book.get("title").casefold():
+            BOOKS[i] = update_book
+    return None
