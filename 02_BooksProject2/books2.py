@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Body
+from pydantic import BaseModel
 
 app = FastAPI()
 
@@ -31,6 +32,22 @@ async def real_all_books():
     return BOOKS
 
 
+# @app.post("/create-book")
+# async def create_book(book_request=Body()):
+#     BOOKS.append(book_request)
+
+
+# Pydantic
+# used for data validation
+
+class BookRequest(BaseModel):
+    id: int
+    title: str
+    author: str
+    description: str
+    rating: int
+
 @app.post("/create-book")
-async def create_book(book_request=Body()):
-    BOOKS.append(book_request)
+async def create_book(book_request:BookRequest):
+    new_book = Book(**book_request.model_dump())
+    BOOKS.append(new_book)
